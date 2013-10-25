@@ -1,0 +1,49 @@
+{% extends "base.html" %} 
+{% load icon %}
+{% load ppmsg %}
+{% load bootstrap %}
+{% load url from future %}
+{% block content %} 
+<h1>私信</h1>
+<ul class="media-list">
+<li>
+<div class="media">
+<form class="navbar-form pull-right" style="margin-bottom: 0;" action="{% url 'messages_search'%}?next={% url 'messages_view' %}" method="get">
+     <div class="form-group">
+         <input name="cond" type="text" placeholder="查找私信" class="form-control">
+         <i class="icon-search"></i>
+     </div>
+	 <input type="submit" class="btn btn-primary" value="搜索"/>
+     <a class="btn btn-primary" href="{% url 'messages_compose'%}?next={% url 'messages_view' %}">发私信</a>
+</form>
+</div> 	
+</li>		
+{% if users and  unreads %} 
+	{% for user, message in users.items %} 
+	
+		<li class="media" id="{{message.id}}#message">
+			<div class="pull-left">{% usericon user 30 "#" %}</div>
+			<div class="media-body">
+				<div>
+				    <span><a href="#">{{ user }}</a></span>	<span>有<a href="#">{{ unreads|get_item:user}}</a>条未读私信</span>					
+					<span class="pull-right"><small class="text-muted">最后一条发送于{{message.sent_at|timesince}}前</small>
+					</span>
+				</div>
+				<p id="{{message.sender.id}}message">{{message.content}}</p>
+				<div class="text-right">
+					<a class="btn btn-default btn-xs"
+						href="{% url 'messages_detail' user %}">查看会话</a>
+					<a class="btn btn-default btn-xs"
+						href="#">删除</a>
+				</div>
+			</div>
+			<div style="margin-top: 10px"></div>
+		</li>
+				
+	{% endfor %}
+
+{% else %}
+	<p>No messages</p>
+{% endif %}   
+</ul>
+{% endblock %}

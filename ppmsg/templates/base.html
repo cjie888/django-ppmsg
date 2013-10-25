@@ -1,0 +1,59 @@
+{% load static %}
+{% load navigation %}
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <link rel="icon" href="{% static 'img/favicon.ico' %}" mce_href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+		<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" mce_href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+	
+		<script type="text/javascript" src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/jquery-ui-1.9.2.min.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
+	
+	    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}" />
+	<style type="text/css">  
+	#win {  
+	    /*希望窗口有边框*/  
+	    border: 1px  solid;  
+	    /*希望窗口宽度和高度固定，不要太大*/  
+	    width: 300px;  
+	    height: 200px;  
+	    /*希望控制窗口的位置*/  
+	    position: absolute;  /*绝对定位*/  
+	    top: 300px;  
+	    left: 600px;  
+	    /*希望窗口开始时不可见*/  
+	    display: none;  
+	} 
+	</style>
+	    <title>{% block full_title %}	    {{ settings.SITE_NAME }}	    {% endblock %}</title>
+	    {% block script %} {% endblock %}
+	</head>
+
+
+	<body>
+	    <div class='container'>
+	    	<div class='row'>
+	    	{% block head %}
+	    		{% render_navbar "" %}
+	    		<div style="height: 70px;">
+	    		</div>
+	    		{% horizon_nav "" settings.HORIZION_SECTION %}
+	    	{% endblock %}
+			</div>
+			
+	       <div class='row'>
+            {% block content %}{% endblock %}
+	       </div>
+	   		
+	   		<div class='row'>
+	   		{% block foot %}{% render_footer %}{% endblock %}
+	   		</div>
+	    </div>
+	</body>
+	
+</html>
+

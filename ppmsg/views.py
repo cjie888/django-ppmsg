@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django import forms
-from toollib.render import render_template
+from toollib.render import render_template, render_json
 from ppmsg.models import Message, message_count_unread
 from ppmsg.forms import ComposeForm
 
@@ -110,6 +110,7 @@ def reply(request, message_id, form_class=ComposeForm,
     return render_template(template_name, request, form = form)
 
 @login_required
+@render_json
 def delete(request, message_id, success_url=None):
     """
     Marks a message as deleted by sender or recipient. The message is not
@@ -126,10 +127,6 @@ def delete(request, message_id, success_url=None):
     now = datetime.datetime.now()
     message = get_object_or_404(Message, id=message_id)
     deleted = False
-    if success_url is None:
-        success_url = reverse('messages_inbox')
-    if request.GET.has_key('next'):
-        success_url = request.GET['next']
     if message.sender == user:
         message.sender_deleted_at = now
         deleted = True
@@ -141,8 +138,8 @@ def delete(request, message_id, success_url=None):
         messages.info(request, u"Message successfully deleted.")
         #if notification:
         #   notification.send([user], "messages_deleted", {'message': message,})
-        return HttpResponseRedirect(success_url)
-    raise Http404
+        return {'status': 'ok', 'msg': u'删除成功!'}
+    return {'status': 'nok', 'msg': u'删除失败!'}
 
 @login_required
 def undelete(request, message_id, success_url=None):

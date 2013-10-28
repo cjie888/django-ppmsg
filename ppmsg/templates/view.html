@@ -19,7 +19,7 @@
 </form>
 </div> 	
 </li>		
-{% if users and  unreads %} 
+{% if users and unreads %} 
 	{% for user, message in users.items %} 
 	
 		<li class="media" id="{{message.id}}#message">
@@ -81,7 +81,7 @@
           datatype:"json",
           success:function(data) {
               data = eval(data)
-              if(data.statu == "ok"){
+              if(data.status == "ok"){
                   $('#del_msg_info').html(data.msg);
                   window.location.href = "{{request.get_full_path}}";
               }else{

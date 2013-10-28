@@ -14,21 +14,6 @@
 	    <script type="text/javascript" src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
 	
 	    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}" />
-	<style type="text/css">  
-	#win {  
-	    /*希望窗口有边框*/  
-	    border: 1px  solid;  
-	    /*希望窗口宽度和高度固定，不要太大*/  
-	    width: 300px;  
-	    height: 200px;  
-	    /*希望控制窗口的位置*/  
-	    position: absolute;  /*绝对定位*/  
-	    top: 300px;  
-	    left: 600px;  
-	    /*希望窗口开始时不可见*/  
-	    display: none;  
-	} 
-	</style>
 	    <title>{% block full_title %}	    {{ settings.SITE_NAME }}	    {% endblock %}</title>
 	    {% block script %} {% endblock %}
 	</head>

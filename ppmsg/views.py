@@ -26,7 +26,6 @@ def compose(request, recipient=None, form_class=ComposeForm,
         ``template_name``: the template to use
         ``success_url``: where to redirect after successfull submission
     """
-
     if request.method == "POST":
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
@@ -42,13 +41,12 @@ def compose(request, recipient=None, form_class=ComposeForm,
         if recipient is not None:
             recipients = [u for u in User.objects.filter(**{'%s__in' % 'username': [r.strip() for r in recipient.split('+')]})]
             form.fields['recipient'].initial = recipients
-    #form.fields['recipient'].widget = forms.HiddenInput()
     breadcrumb = [{"name": u"首页", "url": "/"}, {'name': u'私信','url':'/msg/view/'},{'name': u'写私信 '}]
     return render_template(template_name, request, form = form, breadcrumb=breadcrumb)
 
 @login_required
 @render_json
-def delete(request, message_id, success_url=None):
+def delete(request, message_id):
     """
     Marks a message as deleted by sender or recipient. The message is not
     really removed from the database, because two users must delete a message
@@ -58,7 +56,7 @@ def delete(request, message_id, success_url=None):
     As a side effect, this makes it easy to implement a trash with undelete.
     
     You can pass ?next=/foo/bar/ via the url to redirect the user to a different
-    page (e.g. `/foo/bar/`) than ``success_url`` after deletion of the message.
+    page (e.g. `/foo/bar/`).
     """
     user = request.user
     now = datetime.datetime.now()
@@ -80,7 +78,7 @@ def delete(request, message_id, success_url=None):
 
 @login_required
 @render_json
-def delete_user(request, username, success_url=None):
+def delete_session(request, username, success_url=None):
     """
     Marks a message as deleted by sender or recipient. The message is not
     really removed from the database, because two users must delete a message
@@ -99,6 +97,27 @@ def delete_user(request, username, success_url=None):
         return {'status': 'ok', 'msg': u'删除成功!'}
     except Exception, e:
         return {'status': 'nok', 'msg': u'删除失败!'}
+    
+@login_required
+@render_json
+def set_read(request, username, success_url=None):
+    """
+    Marks a message as deleted by sender or recipient. The message is not
+    really removed from the database, because two users must delete a message
+    before it's save to remove it completely. 
+    A cron-job should prune the database and remove old messages which are 
+    deleted by both users.
+    As a side effect, this makes it easy to implement a trash with undelete.
+    
+    You can pass ?next=/foo/bar/ via the url to redirect the user to a different
+    page (e.g. `/foo/bar/`) than ``success_url`` after deletion of the message.
+    """
+    session_user = User.objects.get(username=username)
+    try:
+        Message.objects.filter(sender=session_user, recipient=request.user, read_at__isnull=True).update(read_at=datetime.datetime.now())
+        return {'status': 'ok', 'msg': u'设置成功!'}
+    except Exception, e:
+        return {'status': 'nok', 'msg': u'设置失败!'}
 
 @login_required
 def view(request, template_name='view.html'):

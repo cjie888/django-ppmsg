@@ -68,7 +68,7 @@
           datatype:"json",
           success:function(data) {
               data = eval(data)
-              if(data.statu == "ok"){
+              if(data.status == "ok"){
                   $('#del_msg_info').html(data.msg);
                   window.location.href = "{{request.get_full_path}}";
               }else{
@@ -78,5 +78,21 @@
           }
       });
   })
+  function set_read(user) {
+      $.ajax({
+          url : '/msg/set_read/' + user, 
+          datatype:"json",
+          success:function(data) {
+              data = eval(data)
+              if(data.status == "ok"){
+            	  console.log('设置成功')
+              } else {
+            	  console.log('设置失败')
+              }
+              
+          }
+      });
+  }
+  set_read('{{session_user}}')
 </script>
 {% endblock %}

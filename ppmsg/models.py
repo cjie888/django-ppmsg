@@ -9,38 +9,6 @@ from django.contrib.auth.models import User
 
 class MessageManager(models.Manager):
 
-    def inbox_for(self, user):
-        """
-        Returns all messages that were received by the given user and are not
-        marked as deleted.
-        """
-        return self.filter(
-            recipient=user,
-            recipient_deleted_at__isnull=True,
-        )
-
-    def outbox_for(self, user):
-        """
-        Returns all messages that were sent by the given user and are not
-        marked as deleted.
-        """
-        return self.filter(
-            sender=user,
-            sender_deleted_at__isnull=True,
-        )
-
-    def trash_for(self, user):
-        """
-        Returns all messages that were either received or sent by the given
-        user and are marked as deleted.
-        """
-        return self.filter(
-            recipient=user,
-            recipient_deleted_at__isnull=False,
-        ) | self.filter(
-            sender=user,
-            sender_deleted_at__isnull=False,
-        )
     def messages_all(self, user):
         """
         Returns all messages that were either received or sent by the given
@@ -128,13 +96,6 @@ class Message(models.Model):
         ordering = ['-sent_at']
         verbose_name = "Message"
         verbose_name_plural = "Messages"
-        
-def inbox_count_for(user):
-    """
-    returns the number of unread messages for the given user but does not
-    mark them seen
-    """
-    return Message.objects.filter(recipient=user, read_at__isnull=True, recipient_deleted_at__isnull=True).count()
 
 def message_count_unread(user_from, user_to):
     """

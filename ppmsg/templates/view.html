@@ -2,9 +2,10 @@
 {% load icon %}
 {% load ppmsg %}
 {% load bootstrap %}
+{% load breadcrumb %}
 {% load url from future %}
 {% block content %} 
-<h1>私信</h1>
+{% breadcrumb breadcrumb request %}
 <ul class="media-list">
 <li>
 <div class="media">
@@ -33,8 +34,7 @@
 				<div class="text-right">
 					<a class="btn btn-default btn-xs"
 						href="{% url 'messages_detail' user %}">查看会话</a>
-					<a class="btn btn-default btn-xs"
-						href="#">删除</a>
+					 <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{user}}", "{{message.content|escapejs}}")'>删除</a>
 				</div>
 			</div>
 			<div style="margin-top: 10px"></div>
@@ -46,4 +46,51 @@
 	<p>No messages</p>
 {% endif %}   
 </ul>
+<!-- DelmsgModal -->
+   <div class="modal fade" id="delmsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                   <h3 id="myModalLabel">删除私信</h3>
+               </div>
+               <div class="modal-body" id='del_msg'>
+                   <p id='del_msg_info'></p>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                   <button type="button" class="btn btn-primary" id="del_msg_yes">确定</button>
+               </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+  function msg_del(username, msg)
+  {  
+      $('#delmsgModal').on('show.bs.modal',function(){
+          $('#del_msg_info').html('删除对话内容将不可恢复，确定要删除与' + username + '的所有对话?')
+          $("#del_msg_yes").data('delmsg', msg);
+          $("#del_msg_yes").data('username', username);
+      })
+  }
+  $("#del_msg_yes").click(function(){
+      var msg = $("#del_msg_yes").data('delmsg');
+      var username = $("#del_msg_yes").data('username');
+      $.ajax({
+          url : '/msg/delete_session/' + username, 
+          datatype:"json",
+          success:function(data) {
+              data = eval(data)
+              if(data.statu == "ok"){
+                  $('#del_msg_info').html(data.msg);
+                  window.location.href = "{{request.get_full_path}}";
+              }else{
+                  $('#del_msg_info').html(data.msg);
+              }
+              setTimeout("$('#delmsgModal').modal('hide')", 1000);
+          }
+      });
+  })
+</script>
+   <!-- endDelmsgModal -->
 {% endblock %}

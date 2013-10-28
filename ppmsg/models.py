@@ -12,7 +12,7 @@ class MessageManager(models.Manager):
     def messages_all(self, user):
         """
         Returns all messages that were either received or sent by the given
-        user and are marked as deleted.
+        user and are not marked as deleted.
         """
         return (self.filter(
             recipient=user,
@@ -24,7 +24,7 @@ class MessageManager(models.Manager):
     def messages_like(self, user, cond):
         """
         Returns all messages that were either received or sent by the given
-        user and are marked as deleted.
+        user and are not marked as deleted.
         """
         return (self.filter(
             recipient=user,
@@ -37,8 +37,7 @@ class MessageManager(models.Manager):
         )).order_by('-sent_at')
     def messages_between(self, user_from, user_to):
         """
-        Returns all messages that were either received or sent by the given
-        user and are marked as deleted.
+        Returns all messages that were between two user and are not marked as deleted.
         """
         return (self.filter(
             recipient=user_from,

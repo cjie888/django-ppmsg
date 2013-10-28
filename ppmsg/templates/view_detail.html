@@ -1,8 +1,9 @@
 {% extends "base.html" %} 
 {% load icon %} 
 {% load url from future %} 
+{% load breadcrumb %} 
 {% block content %}
-<h1>私信--与 {{ session_user }}的会话</h1>
+{% breadcrumb breadcrumb request %}
 {% if message_list %} 
 	<ul class="media-list">
 	{% for message in message_list %}

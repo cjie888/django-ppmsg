@@ -8,22 +8,36 @@
 	<ul class="media-list">
 	{% for message in message_list %}
 			<li class="media" id="{{message.id}}#message">
-				<div class="pull-left">{% usericon message.sender 30 "#" %}</div>
-				<div class="pull-left">{% usericon message.recipient 30 "#" %}</div>
-				<div class="media-body">
-					<div>
-						<!-- <span><a href="#">{{message.recipient}}</a></span>  -->
-						{% if message.read_at == None and message.sender.username == session_user.username %}
-							<span><FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT></span>
-						{% endif %}
-						<span class="pull-right"><small class="text-muted">{{message.sent_at|timesince}}前</small>
-						</span>
+				{% if message.sender.username == session_user.username %}
+					<div class="pull-right">{% usericon message.sender 50 "#" %}</div> 
+					<div class="media-body">
+						<div>
+							<span>&nbsp;</span>	
+							<span class="pull-right">
+							{% if message.read_at == None and message.sender.username == session_user.username %}
+								<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>&nbsp;&nbsp;&nbsp;
+							{% endif %}
+							<small class="text-muted">{{message.sent_at|timesince}}前</small>
+							</span>
+						</div>
+						<p id="{{message.sender.id}}message" class="text-right">{{message.content}}&nbsp;&nbsp;&nbsp;</p>
+						<div class="text-right">
+					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+						</div>
 					</div>
-					<p id="{{message.sender.id}}message">{{message.content}}</p>
-					<div class="text-right">
-				    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+				{% else %}
+					<div class="pull-left">{% usericon message.sender 50 "#" %}</div>
+					<div class="media-body">
+						<div>
+							<span class="pull-center"><small class="text-muted">{{message.sent_at|timesince}}前</small>
+							</span>
+						</div>
+						<p id="{{message.sender.id}}message" class="text-left">{{message.content}}</p>
+						<div class="text-middle">
+					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+						</div>
 					</div>
-				</div>
+				{% endif %}
 				<div style="margin-top: 10px"></div>
 			</li>
 	{% endfor %} 
@@ -49,7 +63,7 @@
  
     <!-- endDelmsgModal -->
 {% else %}
-	<p>No messages</p>
+	<p>您目前没有私信</p>
 {% endif %} 
 <script type="text/javascript">
   function msg_del(id, msg)
@@ -93,6 +107,6 @@
           }
       });
   }
-  set_read('{{session_user}}')
+  //set_read('{{session_user}}')
 </script>
 {% endblock %}

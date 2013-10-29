@@ -23,10 +23,14 @@
 	{% for user, message in users.items %} 
 	
 		<li class="media" id="{{message.id}}#message">
-			<div class="pull-left">{% usericon user 30 "#" %}</div>
+			<div class="pull-left">{% usericon user 40 "#" %}</div>
 			<div class="media-body">
 				<div>
-				    <span><a href="#">{{ user }}</a></span>	<span>有<a href="#">{{ unreads|get_item:user}}</a>条未读私信</span>					
+				    <span><a href="#">{{ user }}&nbsp;</a></span>	
+				    {% if unreads|get_item:user > 0 %}
+				    	<span>有<a href="#">{{ unreads|get_item:user}}</a>条未读私信&nbsp;&nbsp;</span> 
+				    	<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>
+				    {% endif %}					
 					<span class="pull-right"><small class="text-muted">最后一条发送于{{message.sent_at|timesince}}前</small>
 					</span>
 				</div>
@@ -43,7 +47,7 @@
 	{% endfor %}
 
 {% else %}
-	<p>No messages</p>
+	<p>您目前没有私信</p>
 {% endif %}   
 </ul>
 <!-- DelmsgModal -->

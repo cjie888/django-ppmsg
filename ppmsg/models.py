@@ -3,9 +3,10 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.db.models import signals
-
+from django.dispatch import Signal
 from django.contrib.auth.models import User
-
+from django.core.urlresolvers import reverse
+from notification.models import Notice
 
 class MessageManager(models.Manager):
 
@@ -52,7 +53,6 @@ class MessageManager(models.Manager):
             sender=user_from,
             sender_deleted_at__isnull=True,
         )).order_by('-sent_at')
-
 class Message(models.Model):
     """
     A private message from user to user
@@ -96,6 +96,16 @@ class Message(models.Model):
         verbose_name = "Message"
         verbose_name_plural = "Messages"
 
+def message_created(sender, instance, created, **kwargs):
+    '''Notify the recipient that a new private message has been received.'''
+    if created:
+        print 'notice'
+        print instance.sender, instance.id, instance.content, instance.sent_at
+        target = reverse('ppmsg.views.view_detail', args=(instance.sender.username,))
+        print target
+        #Notice.push(user=instance.recipient, notice_type='2', target=target, content=instance.sender.username + u"给您发来新的私信")
+
+signals.post_save.connect(message_created, sender=Message)
 def message_count_unread(user_from, user_to):
     """
     returns the number of unread messages for the given user but does not

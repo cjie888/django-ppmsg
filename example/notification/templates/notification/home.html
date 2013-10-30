@@ -1,0 +1,12 @@
+{% extends "notification/base.html" %}
+{% load notification %}
+{% load pagination %}
+
+
+{% block notification_content %}
+
+{% notification_list notices_page request %}
+
+{% pagination notices_page prefix request %}
+
+{% endblock %}

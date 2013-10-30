@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	{% block title %}
+	<title>{{ settings.APP_NAME }}</title>
+	{% endblock %}
+</head>
+
+<body>
+    <div style="font-size: 13px;">
+    	<h1>您有{{notifications|length}}条通知待处理</h1>
+		
+		<ol>
+			{% for notification in notifications %}
+			<li>{{notification.add_datetime|date:"Y-m-d H:i:s"}}: <a href="{{notification.target}}" target="_blank">{{notification.content}}</a></li>
+			{% endfor %}
+		</ol>
+    	
+    </div>
+    
+    <hr />
+    <p><a href="{{settings.APP_DOMAIN}}/" target="_blank">{{settings.APP_NAME}}</a></p>
+    <p>
+    	&copy; {{settings.APP_DEVELOPER}}
+    	<a href="{{settings.APP_DOMAIN}}{% url notification.views.change %}" target="_blank">通知设置</a>
+    </p>
+</body>
+</html>

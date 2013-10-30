@@ -81,7 +81,7 @@
       var msg = $("#del_msg_yes").data('delmsg');
       var username = $("#del_msg_yes").data('username');
       $.ajax({
-          url : '/msg/delete_session/' + username, 
+          url : '/msg/delete_session/' + username + '/', 
           datatype:"json",
           success:function(data) {
               data = eval(data)

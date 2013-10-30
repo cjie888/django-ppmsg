@@ -1,0 +1,59 @@
+{% load static %}
+
+
+<div id="notice_alert"  style="display:block;" >
+<a href="#" id="notification_alert" data-toggle="popover" data-placement="bottom" data-content="" style="display:none;">
+    <span class="label label-danger"><font id="blink" color="white">提醒</font></span>
+</a>
+</div>
+
+{% if request.user.is_authenticated %}
+<script>
+var dashboard_reminds = "#dashboard_reminds";
+var my_notice_url = "{% url notification.views.my %}";
+var notification_alert_id = "#notification_alert";
+var clear_url = "{% url notification.views.clear %}";
+var clear_btn = "<a href='javascript:void(0);' onclick='clear_all();' class='btn btn-warning btn-xs'>全部忽略</a>";
+var setting_btn = "<a href='{% url notification.views.change %}' target='_blank' class='btn btn-default btn-xs'>通知设置</a>";
+
+
+$(notification_alert_id).popover({html: true});
+
+get_my_notice();
+
+function get_my_notice() {
+	$.getJSON(my_notice_url, {}, function(data) {
+		if (data["is_ok"] == true && data["reasons"].length != 0) {
+			//文字闪烁
+			setInterval(function(){blink.color=blink.color=='#D9534F'?'white':'#D9534F'},500)
+			//10秒后自动消失
+            setTimeout("$('#notice_alert').attr('style', 'display:none')", {{disappear_interval_timestamp}})		
+			// pack popup text
+			var content = "";
+			//"全部忽略"显示
+			content += "<div class='btn-group'>" + clear_btn + setting_btn + "</div>";
+			//"通知设置"显示
+			content += "<ul class='list-unstyled' style='min-width:200px;'>";
+			for (var i = 0; i < data["reasons"].length; i++) {
+				content += "<li>" + data["reasons"][i] + "</li>";
+			}
+			content += "</ul>";
+		    $(notification_alert_id).attr("data-content", content);
+		    
+		    $(notification_alert_id).attr("style", "");
+		}
+	});
+}
+
+function clear_all() {
+	$.getJSON(clear_url, {}, function(data) {
+		if (data["is_ok"]) {
+			$(notification_alert_id).popover("hide");
+			$(notification_alert_id).attr("style", "display:none;");
+		}
+	});
+}
+
+
+</script>
+{% endif %}

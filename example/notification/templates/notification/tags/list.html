@@ -1,0 +1,13 @@
+{% for item in notifications %}
+<p>
+		<span class="text-muted">{{item.add_datetime|date:"Y-m-d H:i:s"}}</span>
+		{% if item.is_read %}
+		{{item.content}}
+		{% else %}
+		<a href="{% url notification.views.go item.id %}" target="_blank" >{{item.content}}</a>
+		{% endif%}
+		
+</p>
+{% empty %}
+<div class="well">暂时没有需要处理的通知</div>
+{% endfor %}

@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'toollib',
     'account',
     'html5tags',
+    'notification',
     'ppmsg',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',

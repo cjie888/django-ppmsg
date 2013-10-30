@@ -78,7 +78,7 @@
       var msg = $("#del_msg_yes").data('delmsg');
       var eid = $("#del_msg_yes").data('eid');
       $.ajax({
-          url : '/msg/delete/' + eid, 
+          url : '/msg/delete/' + eid + '/', 
           datatype:"json",
           success:function(data) {
               data = eval(data)
@@ -94,7 +94,7 @@
   })
   function set_read(user) {
       $.ajax({
-          url : '/msg/set_read/' + user, 
+          url : '/msg/set_read/' + user + '/', 
           datatype:"json",
           success:function(data) {
               data = eval(data)
@@ -107,6 +107,6 @@
           }
       });
   }
-  //set_read('{{session_user}}')
+  set_read('{{session_user}}')
 </script>
 {% endblock %}

@@ -1,0 +1,118 @@
+{% load bootstrap %}
+
+
+<div class="form-group{% if field.errors %} has-error{% endif %}">
+    {% if field|is_checkbox %}
+
+        {% if field.auto_id %}
+        <label>
+            {{ field }} <span>{{ field.label }}</span>
+            {% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        	{% endif %}
+        </label>
+        {% endif %}
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
+	{% elif field|is_multiple_checkbox %}
+		{% if field.auto_id %}
+			<span>{{ field.label }}</span>
+			{% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        	{% endif %}
+            <label>
+                {{ field }}
+            </label>
+            {% endif %}
+            {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+
+    {% elif field|is_radio %}
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}">{{ field.label }}</label>
+            {% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        	{% endif %}
+        {% endif %}
+
+        {% for choice in field %}
+            <div class="radio">
+                <label>
+                    {{ choice.tag }}
+                    {{ choice.choice_label }}
+                </label>
+            </div>
+        {% endfor %}
+
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
+	{% elif field|is_datetime %}
+		<label>{{field.label}}</label>
+		{% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        {% endif %}
+        <div class="input-append date" id={{field.auto_id}} data-date-language="zh-CN" data-date-format="yyyy-mm-dd hh:ii:ss">
+        	<input id="id_start_time" type="time" class="form-control" name="start_time" />
+        	<span class="add-on"><i class="icon-th"></i></span>
+        </div>
+    {% elif field|is_date %}
+		<label>{{field.label}}</label>
+		{% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        {% endif %}
+        <div class="input-append date" id={{field.auto_id}} data-date-language="zh-CN" data-date-format="yyyy-mm-dd">
+        	<input id="id_start_time" type="time" class="form-control" name="start_time" />
+        	<span class="add-on"><i class="icon-th"></i></span>
+        </div>
+    {% elif field|is_time %}
+		<label>{{field.label}}</label>
+		{% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        {% endif %}
+        <div class="input-append date" id={{field.auto_id}} data-date-language="zh-CN" data-date-format="hh:ii:ss">
+        	<input id="id_start_time" type="time" class="form-control" name="start_time" />
+        	<span class="add-on"><i class="icon-th"></i></span>
+        </div>
+    {% else %}
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+            {% if field.help_text %}
+            <small>
+            	<span class="text-muted">{{ field.help_text|safe }}</span>
+            </small>
+        	{% endif %}
+        {% endif %}
+
+        {{ field }}
+
+        {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
+    {% endif %}
+</div>
+{% if field|is_datetime or field|is_date or field|is_time %}
+<script>$("#{{field.auto_id}}").datetimepicker({
+	keyboardNavigation: true,
+	todayBtn: true,
+	todayHighlight: true,
+	startView: 1}, "update");
+</script>
+{% endif %}

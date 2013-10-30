@@ -1,0 +1,34 @@
+{% extends "auth_base.html" %}
+{% load static %}
+{% load bootstrap %}
+{% load breadcrumb %}
+
+
+{% block content %}
+	
+	{% breadcrumb breadcrumb request %}
+	
+	<div class="row">
+		<form role="form" style="margin-left: 15px;margin-right: 15px;" method="POST">
+			{{form|bootstrap}}
+			
+			<div class="form-action">
+				<input type="submit" class="btn btn-default" value="注册"/>
+			</div>
+
+		</form>
+	</div>
+	
+	<script>
+	$(document).ready(function() {
+		$('#js-verificationcode-refresh').click(function () {
+			$.get('{% url verificationcode-new-key %}', function(data) {
+				var image_url = '{% url verificationcode-image  0 %}';
+				image_url = image_url.replace('/0', '/' + data);
+				$('.verificationcode').attr('src', image_url);
+			});
+		});
+	});
+	</script>
+
+{% endblock %}

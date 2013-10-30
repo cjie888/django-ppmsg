@@ -1,0 +1,14 @@
+{% load avatar_tags %}
+
+{% if user.is_anonymous %}
+	匿名用户
+{% else %}
+	<a href="{{ link }}">
+	{% if icon %}
+		<img src="{{MEDIA_URL}}{{icon}}" alt="{{ user.username }}" width="{{size}}px" height="{{size}}px">&nbsp;
+	{% else %}
+		{% avatar user size %}&nbsp;
+	{% endif %}
+	</a>
+{% endif %}
+

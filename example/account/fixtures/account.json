@@ -1,0 +1,10 @@
+[
+	{"pk": 2,
+     "model": "auth.user",
+     "fields":{"email": "test@funshion.com",
+         	   "password": "pbkdf2_sha256$10000$UiNcXl268BBz$9q8pIHLnesVuhi/wTRuOuSpzyqDQvKPoHc6k6F4DyOo=",
+               "username": "test",
+               "is_active": 1,
+               "date_joined": "2013-04-26 05:51:33"}
+	}
+]

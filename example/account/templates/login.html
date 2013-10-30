@@ -1,0 +1,34 @@
+{% extends "auth_base.html" %}
+{% load breadcrumb %}
+{% load bootstrap %}
+
+
+{% block content %}
+
+	{% breadcrumb breadcrumb request %}
+
+	<div class="row">
+		<form role="form" style="margin-left: 15px;margin-right: 15px;" method="POST">
+			{{form|bootstrap}}
+
+			<div class="form-action">
+				<div class="row">
+					<div class='col-xs-3 col-sm-3 col-md-3 col-lg-3'>
+						<div class="alert alert-dismissable" style="padding: 0px 5px;">
+				  			<small>
+				  				<a target="_blank" href="{% url account.views.register %}" style="margin-right: 15%;">还没注册?</a>
+								<a target="_blank" href="{% url account.views.prepare_reset_password %}">忘记密码?</a>
+							</small>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-action">
+					<input type="submit" class="btn btn-default" value="登录"/>
+			</div>
+
+		</form>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+<ul class="pagination pagination-sm">
+	<li class="disabled"><span>总条目 {{pager.paginator.count}}</span></li>
+	{% ifnotequal 1 pager.number %}
+		<li><a class='paginator' title='首页' href='{{prefix}}/1/{% if parameter %}?{{parameter}}{% endif %}'><span>首页</span></a></li>
+	{% endifnotequal %}
+
+    {% if pager.has_previous %}
+		<li><a class='paginator' title='上一页' href='{{prefix}}/{{pager.previous_page_number}}/{% if parameter %}?{{parameter}}{% endif %}'><span>上一页</span></a></li>
+	{% endif %}
+
+	{% for i in pager.paginator.page_range_extension %}
+        {% if i == pager.number %}
+            <li class="active"><a href="{{prefix}}/{{i}}/{% if parameter %}?{{parameter}}{% endif %}">{{ i }}</a></li>
+        {% else %}
+            <li><a href="{{prefix}}/{{i}}/{% if parameter %}?{{parameter}}{% endif %}">{{ i }}</a></li>
+        {% endif %}
+	{% endfor %}
+
+	{% if pager.has_next %}
+    <li><a class='paginator' title='下一页' href='{{prefix}}/{{pager.next_page_number}}/{% if parameter %}?{{parameter}}{% endif %}'><span>下一页</span></a></li>
+	{% endif %}
+
+	{% ifnotequal pager.paginator.num_pages pager.number %}
+	<li><a class='paginator' title='尾页' href='{{prefix}}/{{pager.paginator.num_pages}}/{% if parameter %}?{{parameter}}{% endif %}'><span>尾页</span></a></li>
+	{% endifnotequal %}
+
+	<li class="disabled"><span>共{{pager.paginator.num_pages}}页</span></li>
+</ul>

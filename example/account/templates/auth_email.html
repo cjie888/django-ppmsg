@@ -1,0 +1,35 @@
+{% extends "auth_base.html" %}
+{% load static %}
+
+
+{% block head %}{% endblock %}
+
+{% block content %}
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title" style="color: #5CB85C;">{{ user.username }}, 你好!</h3>
+	</div>
+	<div class="panel-body">
+		<p>
+			您收到这封邮件是因为您在 <em>{{ domain }}</em> 选择了密码恢复功能。
+		</p>
+		<p>
+			请您尽快前往以下地址修改密码: 
+		</p>
+		<a href="{{ protocol }}://{{ domain }}{{ urllink }}">
+			{{ protocol }}://{{ domain }}{{ urllink }}
+		</a>
+		<p style="margin-top: 25px;">
+			感谢您使用{{ domain }}! 
+		</p>
+		<p style="margin-left: 280px;">
+			From： {{ domain }}
+		</p>
+		<p style="margin-top: 50px;">
+			<small>更多帮助：<strong> {{ connectus }} </strong></small>
+		</p>
+	</div>
+</div>
+{% endblock %}
+
+{% block foot %}{% endblock %}

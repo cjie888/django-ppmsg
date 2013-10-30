@@ -1,0 +1,44 @@
+{% load static %}
+{% load navigation %}
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <link rel="icon" href="{% static 'img/favicon.ico' %}" mce_href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+		<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" mce_href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+	
+		<script type="text/javascript" src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/jquery-ui-1.9.2.min.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'bootstrap3/js/bootstrap.min.js' %}"></script>
+	
+	    <link rel="stylesheet" href="{% static 'bootstrap3/css/bootstrap.min.css' %}" />
+	    <title>{% block full_title %}	    {{ settings.SITE_NAME }}	    {% endblock %}</title>
+	    {% block script %} {% endblock %}
+	</head>
+
+
+	<body>
+	    <div class='container'>
+	    	<div class='row'>
+	    	{% block head %}
+	    		{% render_navbar "" %}
+	    		<div style="height: 70px;">
+	    		</div>
+	    		{% horizon_nav "" settings.HORIZION_SECTION %}
+	    	{% endblock %}
+			</div>
+			
+	       <div class='row'>
+            {% block content %}{% endblock %}
+	       </div>
+	   		
+	   		<div class='row'>
+	   		{% block foot %}{% render_footer %}{% endblock %}
+	   		</div>
+	    </div>
+	</body>
+	
+</html>
+

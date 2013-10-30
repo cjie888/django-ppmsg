@@ -1,0 +1,112 @@
+{% extends "base.html" %} 
+{% load icon %} 
+{% load url from future %} 
+{% load breadcrumb %} 
+{% block content %}
+{% breadcrumb breadcrumb request %}
+{% if message_list %} 
+	<ul class="media-list">
+	{% for message in message_list %}
+			<li class="media" id="{{message.id}}#message">
+				{% if message.sender.username == session_user.username %}
+					<div class="pull-right">{% usericon message.sender 50 "#" %}</div> 
+					<div class="media-body">
+						<div>
+							<span>&nbsp;</span>	
+							<span class="pull-right">
+							{% if message.read_at == None and message.sender.username == session_user.username %}
+								<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>&nbsp;&nbsp;&nbsp;
+							{% endif %}
+							<small class="text-muted">{{message.sent_at|timesince}}前</small>
+							</span>
+						</div>
+						<p id="{{message.sender.id}}message" class="text-right">{{message.content}}&nbsp;&nbsp;&nbsp;</p>
+						<div class="text-right">
+					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+						</div>
+					</div>
+				{% else %}
+					<div class="pull-left">{% usericon message.sender 50 "#" %}</div>
+					<div class="media-body">
+						<div>
+							<span class="pull-center"><small class="text-muted">{{message.sent_at|timesince}}前</small>
+							</span>
+						</div>
+						<p id="{{message.sender.id}}message" class="text-left">{{message.content}}</p>
+						<div class="text-middle">
+					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+						</div>
+					</div>
+				{% endif %}
+				<div style="margin-top: 10px"></div>
+			</li>
+	{% endfor %} 
+	</ul>
+	<!-- DelmsgModal -->
+    <div class="modal fade" id="delmsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">删除私信</h3>
+                </div>
+                <div class="modal-body" id='del_msg'>
+                    <p id='del_msg_info'></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="del_msg_yes">确定</button>
+                </div>
+             </div>
+         </div>
+     </div>
+ 
+    <!-- endDelmsgModal -->
+{% else %}
+	<p>您目前没有私信</p>
+{% endif %} 
+<script type="text/javascript">
+  function msg_del(id, msg)
+  {  
+      $('#delmsgModal').on('show.bs.modal',function(){
+          $('#del_msg_info').html('确定要删除该条私信?')
+          $("#del_msg_yes").data('delmsg', msg);
+          $("#del_msg_yes").data('eid', id);
+      })
+  }
+  $("#del_msg_yes").click(function(){
+      var msg = $("#del_msg_yes").data('delmsg');
+      var eid = $("#del_msg_yes").data('eid');
+      $.ajax({
+          url : '/msg/delete/' + eid, 
+          datatype:"json",
+          success:function(data) {
+              data = eval(data)
+              if(data.status == "ok"){
+                  $('#del_msg_info').html(data.msg);
+                  window.location.href = "{{request.get_full_path}}";
+              }else{
+                  $('#del_msg_info').html(data.msg);
+              }
+              setTimeout("$('#delmsgModal').modal('hide')", 500);
+          }
+      });
+  })
+  function set_read(user) {
+      $.ajax({
+          url : '/msg/set_read/' + user, 
+          datatype:"json",
+          success:function(data) {
+              data = eval(data)
+              if(data.status == "ok"){
+            	  console.log('设置成功')
+              } else {
+            	  console.log('设置失败')
+              }
+              
+          }
+      });
+  }
+  set_read('{{session_user}}')
+</script>
+{% endblock %}

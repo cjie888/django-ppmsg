@@ -1,0 +1,30 @@
+<footer>
+	<hr/>
+	<div class="container">
+
+	{% for site_links in footers %}
+    	{% if forloop.last %}
+    	<ul class="list-inline">
+    	{% for copy in site_links %}
+    	<li><small><p><a href="copy.url">{{copy.name}}</a> copyright {{copy.copyright}}</p></small></li>
+    	{% endfor %}
+    	</ul>
+    	{% else %}
+    	<ul class="list-inline">
+    		{% for links in site_links %}
+    		<li><a href="{{links.url}}">{{links.name}}</a> <span class="text-muted">|</span> </li>
+    		{% endfor %}
+    	</ul>
+    	{% endif %}
+	{% endfor %}
+
+	</div>
+
+	<div style="display:none">
+		<script type="text/javascript">
+		var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F422b67bf47a76039759126408d1b0d04' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+	
+</footer>

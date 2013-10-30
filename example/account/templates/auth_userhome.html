@@ -1,0 +1,48 @@
+﻿{% extends "auth_base.html" %}
+{% load static %}
+{% load avatar_tags %}
+{% load breadcrumb %}
+{% load icon %}
+
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+    {% breadcrumb breadcrumb request %}
+    </div>
+</div>
+
+<div class="panel panel-default" style="margin-top: 30px;margin-bottom: 70px;">
+	<div class="panel-body">
+
+		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+			<div style="padding-left:5%;">
+				<h2 style="margin-bottom: 15px;margin-top: 5px;">
+					{% usericon user 30 "#" %}
+					{{user.username}}<small>&nbsp;,&nbsp;欢迎回来!</small>
+				</h2>
+				<p>
+					您已经加入了 &nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+					<strong style="color:#5CB85C;">{{ user.date_joined|timesince }}</strong> &nbsp;,
+					常回来看看哦
+				</p>
+				<p style="margin-bottom: 0px;">
+					<small><strong>最后登入：</strong> {{ user.last_login }}</small>
+					<small>如非本人操作,请尽快&nbsp;&nbsp;<a href="{% url account.views.change_password %}">修改密码</a></small>
+				</p>
+				<p>
+					<small><strong>更多头像：</strong></small>
+					<small class="text-right text-success"><a target="_blank" href="{% url account.views.change_user_icon %}">点我换头像</a></small>
+				</p>
+			</div>
+		</div>
+
+		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+			<img src="/static/img/coffee.jpg" alt="" class="img-responsive">
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+<ul class="nav nav-pills nav-justified">
+{% for tab in tabs %}
+	{% if tab.is_active %}
+	<li class="active"><a title="{{ tab.name }}" href="{{ tab.url }}">{{ tab.name|truncatechars:6 }}</a></li>
+	{% else %}
+	<li><a title="{{ tab.name }}" href="{{ tab.url }}">{{ tab.name|truncatechars:6 }}</a></li>
+	{% endif %}
+{% endfor %}
+</ul>
+
+<hr/>
+

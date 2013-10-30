@@ -1,0 +1,35 @@
+{% load form %}
+
+<form action="{{form_url}}" method="post" role="form">	
+	{% csrf_token %}
+	{{ form.custom_error }}
+	{{ form.sucess_tips}}
+
+	{% for field in form %}
+	<div class="row">
+		{% if field|is_time or field|is_datetime or field|is_date %}
+		<label>{{field.label}}</label>
+		<div id="end_date" class="input-append date" data-date-format="mm/dd/yy">
+			{% crispy_field field %}
+		</div>
+
+		{% elif field|is_checkbox %}
+		<label><b>{{field.label}}</b></label>
+        {% crispy_field field %} {{field.errors}}
+        <small><span class="help-block">{{field.help_text}}</span></small>
+
+        {% else %}
+		<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<label><b>{{field.label}}</b></label>
+			{% crispy_field field %} {{field.errors}}
+			<small><span class="help-block">{{field.help_text}}</span></small>
+		</div>
+		{% endif %}
+	</div>
+	{% endfor %}
+	<div class="row">
+		<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<button type="submit" class="btn btn-default">{{btn_text}}</button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,4 @@
+This is account's user-icon directory. When the app startup, it will create a sub-directory according to your config.
+More details: see "USER_ICON_DIR" in README.MD.
+
+Can not be deleted!

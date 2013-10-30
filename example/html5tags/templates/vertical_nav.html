@@ -1,0 +1,18 @@
+<div class="list-group">
+
+	{% for tab in tabs %}
+		{% if forloop.first %}
+			<a class="list-group-item" href="{{tab.url}}">
+				<h4 class="list-group-item-heading">{{tab.name}}</h4>
+			</a>
+		{% else %}
+			{% if tab.name == cur_tab %}
+			<a title="{{ tab.name }}" class="list-group-item active" href="{{ tab.url }}">{{ tab.name|truncatechars:6 }}</a>
+			{% else %}
+			<a title="{{ tab.name }}" class="list-group-item" href="{{ tab.url }}">{{ tab.name|truncatechars:6 }}</a>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+
+</div>
+

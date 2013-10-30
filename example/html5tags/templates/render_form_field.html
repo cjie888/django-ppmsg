@@ -1,0 +1,7 @@
+<{{field_container}} class="{{container_css}}">
+	<{{label_container}} {% if label_css != "" %} class="{{label_css}}" {% endif %}>{{field.label}}
+		<small><span class="text-muted">{{field.help_text}}</span></small>
+	</{{label_container}}>
+	{{field}}
+	<span class="help-block">{{field.errors}}</span>
+</{{field_container}}>

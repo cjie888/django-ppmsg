@@ -1,6 +1,6 @@
 {% load static %}
 {% load navigation %}
-
+{% load notification %}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,7 +24,7 @@
 	    	{% block head %}
 	    		{% render_navbar "" %}
 	    		<div style="height: 70px;">
-	    		</div>
+	    		</div>{% notice request %}
 	    		{% horizon_nav "" settings.HORIZION_SECTION %}
 	    	{% endblock %}
 			</div>

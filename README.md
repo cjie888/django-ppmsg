@@ -1,4 +1,3 @@
-==========================================
 A user-to-user messaging system for Django
 ==========================================
 Django-ppmsg enables your users to send private messages to each other. 
@@ -38,6 +37,7 @@ Usage
 <pre>
 url(r'msg/', include('ppmsg.urls')),
 </pre>
+
 3. use tag <br/>
 compose message tag:
 <pre>

@@ -37,11 +37,13 @@ Usage
     </pre>
 
 2. Add url conf to your urls.py.
+<br/>
 <pre>
 url(r'msg/', include('ppmsg.urls')),
 </pre>
 
-3. use tag <br/>
+3. Use tag
+<br/>
 compose message tag:
 <pre>
 {% load message_tags %}

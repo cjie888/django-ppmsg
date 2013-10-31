@@ -42,7 +42,7 @@ Usage
 url(r'msg/', include('ppmsg.urls')),
 </pre>
 
-3. Use tag
+3. Use tag.
 <br/>
 compose message tag:
 <pre>

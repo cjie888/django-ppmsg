@@ -24,7 +24,7 @@ You should to copy the following apps into your project:
 Usage
 -----
 
-1. Add  above app to your ``INSTALLED_APPS`` setting.
+###  Add  above app to your ``INSTALLED_APPS`` setting.
     <pre> 
     INSTALLED_APPS += (
         'toollib',
@@ -36,13 +36,13 @@ Usage
         )
     </pre>
 
-2. Add url conf to your urls.py.
+###  Add url conf to your urls.py.
 <br/>
 <pre>
 url(r'msg/', include('ppmsg.urls')),
 </pre>
 
-3. Use tag.
+### Use tag.
 <br/>
 compose message tag:
 <pre>

@@ -13,13 +13,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/tmp/sqlite',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'ppmsg',                      # Or path to database file if using sqlite3.
+        'USER': 'traceall',                      # Not used with sqlite3.
+        'PASSWORD': 'systraceall',                  # Not used with sqlite3.
+        'HOST': '192.168.16.223',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
+        'DATABASE_CHARSET': 'UTF8',
     }
 }
 
@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'toollib',
     'account',
     'html5tags',
+    'table',
     'notification',
     'ppmsg',
     # Uncomment the next line to enable the admin:
@@ -180,3 +181,4 @@ HORIZION_SECTION = [{"name": u"首页", "url": "/"},
                     {"name": u"媒体信息", "url": "/"},
                     {"name": u"成长记录", },
                   ]
+DISAPPEAR_INTERVAL_TIMESTAMP=10000

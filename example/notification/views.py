@@ -7,28 +7,39 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-from notification.models import Notice, NoticeSetting, devices_set_true
+from django.shortcuts import render
 from toollib.page import get_page
 from toollib.render import render_template, render_json
+from notification.models import Notice, NoticeSetting, devices_set_true, NoticeList
 from notification import config
 from notification.forms import NoticeSettingForm
+from notification.tables import NoticeTable
+
 # from html5helper.utils import do_paginator
 # from html5helper.decorator import render_template, render_json
 
 
 
+
 @login_required
 def home(request, page_no=1):
-    notices = Notice.objects.filter(user=request.user)
-    notices_page = get_page(notices, page_no, config.PAGE_SIZE)
+    notices = Notice.objects.filter(user=request.user) 
     prefix = reverse("notification.views.home")
-    
     current_nav = u"通知中心"
     breadcrumbs = [
         {"name": current_nav},
     ]
+    for notice in notices:
+        add_datetime_timestamp = time.mktime(notice.add_datetime.timetuple())
+        add_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(add_datetime_timestamp))
+        if notice.is_read == 1:
+            NoticeList.push(add_datetime=add_datetime, content=notice.content) 
+        else:
+            content="<a href=\"%s\" target=\"_blank\" >%s</a>" % (notice.target, notice.content)
+            NoticeList.push(add_datetime=add_datetime, content=content)
+    show_notices = NoticeTable()
     return render_template("notification/home.html", request=request, prefix=prefix, \
-                           notices_page=notices_page, breadcrumbs=breadcrumbs,
+                           show_notices=show_notices, breadcrumbs=breadcrumbs,
                            current_nav=current_nav)
 
 
@@ -76,7 +87,6 @@ def go(request, notice_id):
 @login_required
 @render_json
 def my(request):
-    reasons = []
     is_ok = False
     # check notifications
     notices = Notice.objects.unread_of_web(request.user)
@@ -88,7 +98,9 @@ def my(request):
 
 def get_reasons(reasons, notices):
     for notice in notices:
+        print notice
         reminder_flag = get_reminder_flag(notice)
+        print reminder_flag 
         if reminder_flag != 0:
             if reminder_flag == 1:
                 update_notice(notice)
@@ -96,6 +108,7 @@ def get_reasons(reasons, notices):
                                     notice.add_datetime,
                                     reverse("notification.views.go", args=[notice.id]), 
                                     notice.content)))
+            print reasons
     return reasons
     
 def get_reminder_flag(notice, unit_timestamp=config.ONE_DAY_SECONDS):
@@ -107,6 +120,7 @@ def get_reminder_flag(notice, unit_timestamp=config.ONE_DAY_SECONDS):
         now_timestamp = time.time()
         last_reminder_timestamp = time.mktime(notice.last_reminder_time.timetuple())
         between_days = int(now_timestamp - last_reminder_timestamp) / unit_timestamp
+        print between_days
         if between_days >= notice.reminder_value:
             reminder_flag = 1    
     return reminder_flag

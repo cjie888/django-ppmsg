@@ -16,7 +16,7 @@ DEFAULT_DEVICE_FLAGS = 0x0001
 
 def create_notice_type(label, display, description, **kwargs):
     return NoticeType.create(label, display, description, **kwargs)
-    
+
 
 class NoticeType(models.Model):
     
@@ -242,3 +242,22 @@ def devices_set_true(flags, devices):
             device = int(device)
         result = (0x0001 << device) | result
     return result
+
+
+
+# add the auto table
+class NoticeList(models.Model):
+    add_datetime = models.CharField(max_length=100)
+    content = models.CharField(max_length=100)
+    @classmethod
+    def push(cls, add_datetime, content, **kwargs):
+        """ if target has exists, do't allow to add
+        params:
+           content: content
+        """
+        try:
+            notice_list = cls.objects.get(add_datetime=add_datetime, content=content)
+        except exceptions.ObjectDoesNotExist:
+            notice_list = cls.objects.create(add_datetime=add_datetime, content=content)
+        return notice_list
+    

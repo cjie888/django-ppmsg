@@ -2,6 +2,7 @@
 {% load static %}
 {% load breadcrumb %}
 {% load notification %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,43 +23,23 @@
                 <div style="margin-top: 5em;"></div>
             </header>
                 {% block content %}
-					<div class="row">
-						<div class="col-xs-12 col-md-3" style="margin-top: 10px" iit='table'>
+					<div class="row" >
+						<div class="col-xs-12 col-md-3" style="margin-top: 3px;" iit='table'>
 							{% load navigation %}
-							<ul class="nav nav-pills nav-stacked">
-								<li class="nav-header"  style="font-size:20px;border-bottom-style:solid; border-width: 3px; border-color:rgb(245, 245, 245)">
-									<span class="muted">通知</span>
+							<ul class="list-group" id="menu" style="position:absolute;">
+								<li class="list-group-item"  style="background-color: rgb(245, 245, 245); width:200px;">
+										</span><span class="muted"  style=" color: rgb(153, 153, 153);"><strong>通&nbsp;&nbsp;&nbsp;&nbsp;知</strong></span>
 								</li>
-								</br>
-								<li class="divider"></li>
-								<div style="margin-top: 10px"></div>
-								<div class='row-fluid'>
-									<div class='span12'>
-										<span class="muted"><a href="/notification/" onclick="flag_move()"><span class="glyphicon  glyphicon-hand-right"></span>全部通知</a></span>
-										 </script>
-									</div>
-								</div>
-								</br>
-								<div class='row-fluid'>
-									<div class='span12'>
-										<span class="muted"><a href="/notification/change/"><span class="glyphicon glyphicon-cog"></span>设置</a></span>
-									</div>
-								</div>
+								<li class="list-group-item" >
+									<span class="muted"><a href="/notification/" onclick="flag_move()"><span class="glyphicon  glyphicon-hand-right"></span>&nbsp;&nbsp;&nbsp;全部通知</a></span>
+								</li>
+							   <li class="list-group-item" >
+									<span class="muted"><a href="/notification/change/"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;&nbsp;设置</a></span>
+								</li>
 							</ul>
 						</div> 
 						<div class="col-xs-12 col-md-9">
-							{% breadcrumb breadcrumbs request %}
-							
-							{% for message in messages %}
-							<div class="{{message.tags}}" style="margin: 0 0 5px 0;">
-								<button type="button" class="close" data-dismiss="alert">&times;</button>
-								{% if notice.is_read == 0 %}
-								    <a href="{% url notification_info notice.id %}" target="_blank">{{message}}</a>
-								{% else %}
-									{{message}}
-								{% endif %}
-							</div>
-							{% endfor %}
+						   {% breadcrumb breadcrumbs request %}
                            {% block notification_content %}
                            {% endblock%} 
 						</div>

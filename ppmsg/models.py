@@ -7,6 +7,7 @@ from django.dispatch import Signal
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from notification.models import Notice
+from notification.models import NoticeType
 
 class MessageManager(models.Manager):
 
@@ -99,11 +100,9 @@ class Message(models.Model):
 def message_created(sender, instance, created, **kwargs):
     '''Notify the recipient that a new private message has been received.'''
     if created:
-        print 'notice'
-        print instance.sender, instance.id, instance.content, instance.sent_at
         target = reverse('ppmsg.views.view_detail', args=(instance.sender.username,))
-        print target
-        #Notice.push(user=instance.recipient, notice_type='2', target=target, content=instance.sender.username + u"给您发来新的私信")
+        notice_type = NoticeType.create(label="private message", display=u"新私信", description=u"新私信")
+        Notice.push(user=instance.recipient, notice_type=notice_type, target=target, content=instance.sender.username + u"给您发来新的私信")
 
 signals.post_save.connect(message_created, sender=Message)
 def message_count_unread(user_from, user_to):

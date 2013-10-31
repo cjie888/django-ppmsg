@@ -4,6 +4,9 @@ A user-to-user messaging system for Django
 Django-ppmsg enables your users to send private messages to each other. 
 It provides a basic set of functionality that you would expect from such a system.
 
+If you have any question, please contact **dev-web-sys@funshion.com** 
+
+Github link: <https://github.com/cjie888/django-ppmsg>
 Install
 -------
 You should to copy the following apps into your project:
@@ -33,15 +36,7 @@ Usage
         )</pre>
 2. Add url conf to your urls.py.
 <pre>
-from ppmsg.views import *
-url(r'^msg/compose/$', compose, name='messages_compose'),
-url(r'^msg/compose/(?P<recipient>[\w.@+-]+)/$', compose, name='messages_compose_to'),
-url(r'^msg/search/$', view, name='messages_search'),
-url(r'^msg/view/$', view, name='messages_view'),
-url(r'^msg/detail/(?P<username>[\w.@+-]+)/$', view_detail, name='messages_detail'),
-url(r'^msg/delete_session/(?P<username>[\w.@+-]+)/$', delete_session, name='messages_delete_session'),
-url(r'^msg/set_read/(?P<username>[\w.@+-]+)/$', set_read, name='messages_set_read'),
-url(r'^msg/delete/(?P<message_id>[\d]+)/$', delete, name='messages_delete'),
+url(r'msg/', include('ppmsg.urls')),
 </pre>
 3. use tag <br/>
 compose message tag:

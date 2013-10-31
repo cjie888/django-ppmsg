@@ -25,14 +25,17 @@ Usage
 -----
 
 1. Add  above app to your ``INSTALLED_APPS`` setting.
-    <pre> INSTALLED_APPS += (
+    <pre> 
+    INSTALLED_APPS += (
         'toollib',
         'html5tags',
         'avatar',
         'acount',
         'notification',
         'ppmsg',
-        )</pre>
+        )
+    </pre>
+
 2. Add url conf to your urls.py.
 <pre>
 url(r'msg/', include('ppmsg.urls')),

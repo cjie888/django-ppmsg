@@ -11,4 +11,5 @@ urlpatterns = patterns("notification.views",
     url(r"^go/(?P<notice_id>\d+)/$", "go"),
     url(r"^my/$", "my"),
     url(r"^clear/$", "clear"),
+    url(r"^unread/$", "show_unread"),
 )

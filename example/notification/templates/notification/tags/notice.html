@@ -15,6 +15,7 @@ var notification_alert_id = "#notification_alert";
 var clear_url = "{% url notification.views.clear %}";
 var clear_btn = "<a href='javascript:void(0);' onclick='clear_all();' class='btn btn-warning btn-xs'>全部忽略</a>";
 var setting_btn = "<a href='{% url notification.views.change %}' target='_blank' class='btn btn-default btn-xs'>通知设置</a>";
+var list_btn = "<a href='{% url notification.views.home %}'  class='btn btn-info btn-xs'>查看更多</a>";
 
 
 $(notification_alert_id).popover({html: true});
@@ -37,6 +38,7 @@ function get_my_notice() {
 			for (var i = 0; i < data["reasons"].length; i++) {
 				content += "<li>" + data["reasons"][i] + "</li>";
 			}
+			content += "<div class='btn-group'>" + list_btn + "</div>";
 			content += "</ul>";
 		    $(notification_alert_id).attr("data-content", content);
 		    

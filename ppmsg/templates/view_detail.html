@@ -1,16 +1,56 @@
 {% extends "base.html" %} 
 {% load icon %} 
 {% load url from future %} 
-{% load breadcrumb %} 
+{% load breadcrumb %}
 {% block content %}
+<style type="text/css">
+.arrow_box_left {
+	position: relative;
+	background: #f2f2f2;
+	border: 1px solid #ffffff;
+}
+.arrow_box_left:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-right-color: #f2f2f2;
+	border-width: 10px;
+	margin-top: -10px;
+}
+
+.arrow_box_right {
+    position: relative;
+    background: #f2f2f2;
+    border: 1px solid #ffffff;
+}
+.arrow_box_right:after {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+	border-color: rgba(208, 213, 198, 0);
+    border-left-color: #f2f2f2;
+    border-width: 10px;
+    margin-top: -10px;
+}
+</style>
 {% breadcrumb breadcrumb request %}
 {% if message_list %} 
 	<ul class="media-list">
 	{% for message in message_list %}
 			<li class="media" id="{{message.id}}#message">
 				{% if message.sender.username == session_user.username %}
-					<div class="pull-right">{% usericon message.sender 50 "#" %}</div> 
-					<div class="media-body">
+                    <div class="col-xs-1 col-md-1"></div>
+					<div class="col-xs-10 col-md-10 arrow_box_right">
 						<div>
 							<span>&nbsp;</span>	
 							<span class="pull-right">
@@ -20,23 +60,25 @@
 							<small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<p id="{{message.sender.id}}message" class="text-right" style="">{{message.content}}&nbsp;&nbsp;&nbsp;</p>
+						<div id="{{message.sender.id}}message" class="text-right">{{message.content}}&nbsp;&nbsp;&nbsp;</div>
 						<div class="text-right">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>
 					</div>
+                    <div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
 				{% else %}
-					<div class="pull-left">{% usericon message.sender 50 "#" %}</div>
-					<div class="media-body">
-						<div>
-							<span class="pull-center"><small class="text-muted">{{message.sent_at|timesince}}前</small>
-							</span>
-						</div>
-						<p id="{{message.sender.id}}message" class="text-left msg_dia_txt">{{message.content}}</p>
-						<div class="text-middle">
-					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
-						</div>
+					<div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
+					<div class="col-xs-10 col-md-10 arrow_box_left">
+                        <div>
+                            <span class="pull-center"><small class="text-muted">&nbsp;&nbsp;&nbsp;{{message.sent_at|timesince}}前</small>
+                            </span>
+                        </div>
+                        <div id="{{message.sender.id}}message" class="text-left">&nbsp;&nbsp;{{message.content}}</div>
+                        <div class="text-right">
+                        <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
+                        </div>
 					</div>
+                    <div class="col-xs-1 col-md-1"></div>
 				{% endif %}
 				<div style="margin-top: 10px"></div>
 			</li>

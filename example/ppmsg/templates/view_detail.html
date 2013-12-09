@@ -20,7 +20,7 @@
 							<small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<p id="{{message.sender.id}}message" class="text-right">{{message.content}}&nbsp;&nbsp;&nbsp;</p>
+						<p id="{{message.sender.id}}message" class="text-right" style="">{{message.content}}&nbsp;&nbsp;&nbsp;</p>
 						<div class="text-right">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>
@@ -32,7 +32,7 @@
 							<span class="pull-center"><small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<p id="{{message.sender.id}}message" class="text-left">{{message.content}}</p>
+						<p id="{{message.sender.id}}message" class="text-left msg_dia_txt">{{message.content}}</p>
 						<div class="text-middle">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>

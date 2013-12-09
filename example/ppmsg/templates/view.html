@@ -11,15 +11,15 @@
 <div class="media">
 <form class="navbar-form pull-right" style="margin-bottom: 0;" action="{% url 'messages_search'%}?next={% url 'messages_view' %}" method="get">
      <div class="form-group">
-         <input name="cond" type="text" placeholder="查找私信" class="form-control">
+         <input name="cond" type="text" value="{% if cond %}{{cond}}{% endif %}" placeholder="查找私信  " class="form-control">
          <i class="icon-search"></i>
      </div>
-	 <input type="submit" class="btn btn-primary" value="搜索"/>
+	 <input type="submit" class="btn btn-default" value="搜索"/>
      <a class="btn btn-primary" href="{% url 'messages_compose'%}?next={% url 'messages_view' %}">写私信</a>
 </form>
 </div> 	
 </li>		
-{% if users and unreads %} 
+{% if users and unreads and msgcounts %} 
 	{% for user, message in users.items %} 
 	
 		<li class="media" id="{{message.id}}#message">
@@ -27,14 +27,14 @@
 			<div class="media-body">
 				<div>
 				    <span><a href="#">{{ user }}&nbsp;</a></span>	
-				    {% if unreads|get_item:user > 0 %}
-				    	<span>有<a href="#">{{ unreads|get_item:user}}</a>条未读私信&nbsp;&nbsp;</span> 
-				    	<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>
-				    {% endif %}					
+				    <span>有{{ unreads|get_item:user}}条未读私信, 共有{{msgcounts|get_item:user}}条私信&nbsp;&nbsp;</span> 
 					<span class="pull-right"><small class="text-muted">最后一条发送于{{message.sent_at|timesince}}前</small>
 					</span>
 				</div>
-				<p id="{{message.sender.id}}message">{{message.content}}</p>
+				<p id="{{message.sender.id}}message">{{message.content}}			    
+					{% if unreads|get_item:user > 0 %}
+				    	<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>
+				    {% endif %}	</p>
 				<div class="text-right">
 					<a class="btn btn-default btn-xs"
 						href="{% url 'messages_detail' user %}">查看会话</a>

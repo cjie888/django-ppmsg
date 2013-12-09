@@ -105,6 +105,11 @@ def message_created(sender, instance, created, **kwargs):
         Notice.push(user=instance.recipient, notice_type=notice_type, target=target, content=instance.sender.username + u"给您发来新的私信")
 
 signals.post_save.connect(message_created, sender=Message)
+def message_count_all(user_from, user_to):
+    """
+    returns the number of messages for the given user.
+    """
+    return Message.objects.messages_between(user_from, user_to).count()
 def message_count_unread(user_from, user_to):
     """
     returns the number of unread messages for the given user but does not

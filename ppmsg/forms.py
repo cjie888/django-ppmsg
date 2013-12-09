@@ -12,7 +12,7 @@ class ComposeForm(forms.Form):
     """
     #recipient = CommaSeparatedUserField(label=_(u"Recipient"))
     recipient = CommaSeparatedUserField(label=_(u"发给"))
-    content = fields.CharField(label=_(u"内容"), max_length=120)
+    content = fields.CharField(label=_(u"内容"), max_length=300, widget=forms.Textarea(attrs={'rows':3}))
         
     def __init__(self, *args, **kwargs):
         recipient_filter = kwargs.pop('recipient_filter', None)

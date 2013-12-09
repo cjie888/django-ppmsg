@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django import forms
 from toollib.render import render_template, render_json
-from ppmsg.models import Message, message_count_unread
+from ppmsg.models import Message, message_count_unread, message_count_all
 from ppmsg.forms import ComposeForm
 
 @login_required
@@ -145,8 +145,11 @@ def view(request, template_name='view.html'):
     msg_unreads = {}
     for user in user_lastmsgs:
         msg_unreads[user] = message_count_unread(user, request.user)
+    msg_counts = {}
+    for user in user_lastmsgs:
+        msg_counts[user] = message_count_all(user, request.user)
     breadcrumb = [{"name": u"首页", "url": "/"}, {'name': u'私信'}]
-    return render_template(template_name, request, users = user_lastmsgs, unreads = msg_unreads, breadcrumb=breadcrumb)
+    return render_template(template_name, request, users = user_lastmsgs, unreads = msg_unreads, msgcounts = msg_counts, breadcrumb=breadcrumb, cond=cond)
 
 @login_required
 def view_detail(request, username, template_name='view_detail.html'):

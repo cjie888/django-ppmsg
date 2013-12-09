@@ -2,9 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 from ppmsg.views import *
 import settings
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'compose/$', compose, name='messages_compose'),

@@ -36,6 +36,10 @@ class MessageManager(models.Manager):
             sender=user,
             sender_deleted_at__isnull=True,
             content__icontains=cond,
+        )|self.filter(
+            recipient=user,
+            recipient_deleted_at__isnull=True,
+            sender__username__icontains=cond,
         )).order_by('-sent_at')
     def messages_between(self, user_from, user_to):
         """

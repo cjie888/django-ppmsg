@@ -5,13 +5,28 @@
 {% load breadcrumb %}
 {% load url from future %}
 {% block content %}
+<style type="text/css">
+	.changecolor0{color:#f00;}
+	.changecolor1{color:#0f0;}
+	.changecolor2{color:#00f;}
+	.changecolor3{color:#f0f;}
+	.changecolor4{color:#0ff;}
+	.changecolor5{color:#000;}
+</style>
+<script type="text/javascript">
+  var i=0;
+  function blink(id){
+	document.getElementById(id).className="changecolor"+i%6;
+	i++;
+  }
+</script>
 {% breadcrumb breadcrumb request %}
 <ul class="media-list">
 <li>
 <div class="media">
 <form class="navbar-form pull-right" style="margin-bottom: 0;" action="{% url 'messages_search'%}?next={% url 'messages_view' %}" method="get">
      <div class="form-group">
-         <input name="cond" type="text" value="{% if cond %}{{cond}}{% endif %}" placeholder="查找私信  " class="form-control">
+         <input name="cond" type="text" value="{% if condition %}{{condition}}{% endif %}" placeholder="查找私信  " class="form-control">
          <i class="icon-search"></i>
      </div>
 	 <input type="submit" class="btn btn-default" value="搜索"/>
@@ -31,10 +46,7 @@
 					<span class="pull-right"><small class="text-muted">最后一条发送于{{message.sent_at|timesince}}前</small>
 					</span>
 				</div>
-				<div id="{{message.sender.id}}message" style="word-break:break-all">{{message.content}}
-					{% if unreads|get_item:user > 0 %}
-				    	<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>
-				    {% endif %}	</div>
+				<div id="message#{{message.sender.id}}" style="word-break:break-all">{{message.content}}	</div>
 				<div class="text-right">
 					<a class="btn btn-default btn-xs"
 						href="{% url 'messages_detail' user %}">查看会话</a>
@@ -43,6 +55,11 @@
 			</div>
 			<div style="margin-top: 10px"></div>
 		</li>
+        {%  if unreads|get_item:user > 0 %}
+            <script type="text/javascript">
+            setInterval(blink, 1000, "message#{{message.sender.id}}");
+            </script>
+        {%  endif %}
 				
 	{% endfor %}
 

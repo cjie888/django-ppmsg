@@ -149,11 +149,11 @@ def view(request, template_name='view.html'):
     If the user is the recipient and the message is unread 
     ``read_at`` is set to the current datetime.
     """
-    cond = None
-    if 'cond' in request.GET:
-        cond = request.GET['cond']
-    if cond:
-        message_list = Message.objects.messages_like(request.user, cond)
+    condition = None
+    if 'condition' in request.GET:
+        condition = request.GET['condition']
+    if condition:
+        message_list = Message.objects.messages_like(request.user, condition)
     else:
         message_list = Message.objects.messages_all(request.user)
     user_lastmsgs = {}
@@ -169,7 +169,7 @@ def view(request, template_name='view.html'):
     for user in user_lastmsgs:
         msg_counts[user] = message_count_all(user, request.user)
     breadcrumb = [{"name": u"首页", "url": "/"}, {'name': u'私信'}]
-    return render_template(template_name, request, users = user_lastmsgs, unreads = msg_unreads, msgcounts = msg_counts, breadcrumb=breadcrumb, cond=cond)
+    return render_template(template_name, request, users = user_lastmsgs, unreads = msg_unreads, msgcounts = msg_counts, breadcrumb=breadcrumb, condition=condition)
 
 @login_required
 def view_detail(request, username, template_name='view_detail.html'):

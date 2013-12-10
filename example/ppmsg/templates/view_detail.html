@@ -6,9 +6,9 @@
 <style type="text/css">
 .arrow_box_left {
 	position: relative;
-	background: #f2f2f2;
+	background: #a6dc00;
     border-radius: 15px;
-	border: 1px solid #ffffff;
+	border: 1px solid #a6dc00;
 }
 .arrow_box_left:before {
 	right: 100%;
@@ -19,16 +19,16 @@
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-right-color: #f2f2f2;
+	border-right-color: #a6dc00;
 	border-width: 10px;
 	margin-top: -10px;
 }
 
 .arrow_box_right {
     position: relative;
-    background: #a6dc00;
+    background: #f2f2f2;
     border-radius: 15px;
-    border: 1px solid #a6dc00;
+    border: 1px solid #f2f2f2;
 }
 .arrow_box_right:after {
     left: 100%;
@@ -40,11 +40,26 @@
     position: absolute;
     pointer-events: none;
 	border-color: rgba(208, 213, 198, 0);
-    border-left-color: #a6dc00;
+    border-left-color: #f2f2f2;
     border-width: 10px;
     margin-top: -10px;
 }
 </style>
+<style type="text/css">
+	.changecolor0{color:#f00;}
+	.changecolor1{color:#0f0;}
+	.changecolor2{color:#00f;}
+	.changecolor3{color:#f0f;}
+	.changecolor4{color:#0ff;}
+	.changecolor5{color:#000;}
+</style>
+<script type="text/javascript">
+  var i=0;
+  function blink(id){
+	document.getElementById(id).className="changecolor"+i%6;
+	i++;
+  }
+</script>
 {% breadcrumb breadcrumb request %}
 <div class="row">
     <div class="col-xs-1 col-md-1"></div>
@@ -71,18 +86,20 @@
 						<div>
 							<span>&nbsp;</span>
 							<span class="pull-right">
-							{% if message.read_at == None and message.sender.username == session_user.username %}
-								<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>&nbsp;&nbsp;&nbsp;
-							{% endif %}
 							<small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<div id="{{message.sender.id}}message" class="text-left" style="word-break:break-all">{{message.content}}</div>
+						<div id="message#{{message.sender.id}}" class="text-left" style="word-break:break-all">{{message.content}}</div>
 						<div class="text-right">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>
 					</div>
                     <div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
+                    {% if message.read_at == None and message.sender.username == session_user.username %}
+					    <script type="text/javascript">
+                            setInterval(blink, 1000, "message#{{message.sender.id}}");
+                        </script>
+					{% endif %}
 				{% else %}
 					<div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
 					<div class="col-xs-10 col-md-10 arrow_box_left">

@@ -4,7 +4,7 @@
 {% load bootstrap %}
 {% load breadcrumb %}
 {% load url from future %}
-{% block content %} 
+{% block content %}
 {% breadcrumb breadcrumb request %}
 <ul class="media-list">
 <li>
@@ -31,10 +31,10 @@
 					<span class="pull-right"><small class="text-muted">最后一条发送于{{message.sent_at|timesince}}前</small>
 					</span>
 				</div>
-				<p id="{{message.sender.id}}message">{{message.content}}			    
+				<div id="{{message.sender.id}}message" style="word-break:break-all">{{message.content}}
 					{% if unreads|get_item:user > 0 %}
 				    	<FONT COLOR="#0000ff">N</FONT><FONT COLOR="#A500ff">e</FONT><FONT COLOR="#FF00B4">w</FONT>
-				    {% endif %}	</p>
+				    {% endif %}	</div>
 				<div class="text-right">
 					<a class="btn btn-default btn-xs"
 						href="{% url 'messages_detail' user %}">查看会话</a>

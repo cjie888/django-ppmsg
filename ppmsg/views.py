@@ -46,6 +46,26 @@ def compose(request, recipient=None, form_class=ComposeForm,
 
 @login_required
 @render_json
+def send_msg(request,  recipient):
+    try:
+        if request.method == "POST":
+            querydict = request.POST.copy()
+            recipients = User.objects.get(username=recipient),
+            content = querydict['content']
+            msg = Message(
+                    sender = request.user,
+                    recipient = recipients[0],
+                    content = content,
+            )
+            msg.save()
+            return {'status': 'ok', 'msg': u'发送成功!'}
+    except Exception, e:
+        print e
+        return {'status': 'nok', 'msg': u'发送失败!'}
+    return {'status': 'nok', 'msg': u'发送失败!'}
+
+@login_required
+@render_json
 def delete(request, message_id):
     """
     Marks a message as deleted by sender or recipient. The message is not

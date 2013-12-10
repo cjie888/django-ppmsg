@@ -13,12 +13,10 @@ from toollib.render import render_template, render_json
 from notification.models import Notice, NoticeSetting, devices_set_true, NoticeList
 from notification import config
 from notification.forms import NoticeSettingForm
-from notification.tables import NoticeTable
+from notification.tables import NoticeTable, UnreadNoticeTable
 
 # from html5helper.utils import do_paginator
 # from html5helper.decorator import render_template, render_json
-
-
 
 
 @login_required
@@ -29,13 +27,15 @@ def home(request, page_no=1):
     breadcrumbs = [
         {"name": current_nav},
     ]
+    NoticeList.objects.all().delete()
     for notice in notices:
         add_datetime_timestamp = time.mktime(notice.add_datetime.timetuple())
         add_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(add_datetime_timestamp))
         if notice.is_read == 1:
             NoticeList.push(add_datetime=add_datetime, content=notice.content) 
         else:
-            content="<a href=\"%s\" target=\"_blank\" >%s</a>" % (notice.target, notice.content)
+            info_url=reverse("notification.views.go",args=[notice.id])
+            content="<a href=\"%s\" target=\"_blank\" >%s</a>" % (info_url, notice.content)
             NoticeList.push(add_datetime=add_datetime, content=content)
     show_notices = NoticeTable()
     return render_template("notification/home.html", request=request, prefix=prefix, \
@@ -81,6 +81,10 @@ def go(request, notice_id):
     
     notice.is_read = True
     notice.save()
+    add_datetime_timestamp = time.mktime(notice.add_datetime.timetuple())
+    add_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(add_datetime_timestamp))
+    NoticeList.objects.filter(add_datetime=add_datetime, content=notice.content).delete()
+    NoticeList.push(add_datetime=add_datetime, content=notice.content) 
     return redirect(notice.target)
 
 
@@ -88,6 +92,7 @@ def go(request, notice_id):
 @render_json
 def my(request):
     is_ok = False
+    reasons = []
     # check notifications
     notices = Notice.objects.unread_of_web(request.user)
     if len(notices) > 0:
@@ -156,3 +161,28 @@ def clear(request):
         notice.save()
         
     return {"is_ok":True}
+
+
+@login_required
+def show_unread(request, page_no=1):
+    notices = Notice.objects.filter(user=request.user) 
+    prefix = reverse("notification.views.home")
+    current_nav = u"通知中心"
+    breadcrumbs = [
+        {"name": current_nav},
+    ]
+    NoticeList.objects.all().delete()
+    for notice in notices:
+        add_datetime_timestamp = time.mktime(notice.add_datetime.timetuple())
+        add_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(add_datetime_timestamp))
+        print notice.content
+        if notice.is_read == 1:
+            continue
+        print notice.content
+        info_url=reverse("notification.views.go",args=[notice.id])
+        content="<a href=\"%s\" target=\"_blank\" >%s</a>" % (info_url, notice.content)
+        NoticeList.push(add_datetime=add_datetime, content=content)
+    show_notices = UnreadNoticeTable()
+    return render_template("notification/home.html", request=request, prefix=prefix, \
+                           show_notices=show_notices, breadcrumbs=breadcrumbs,
+                           current_nav=current_nav)

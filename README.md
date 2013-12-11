@@ -43,7 +43,7 @@ url(r'msg/', include('ppmsg.urls')),
 </pre>
 
 ### The page which you can use:
-/msg/view/  Display the private message of the current login user
+/msg/view/  Display the private message of the current login user <br/>
 /msg/compose/ Compose private message
 
 

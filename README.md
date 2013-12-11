@@ -42,6 +42,13 @@ Usage
 url(r'msg/', include('ppmsg.urls')),
 </pre>
 
+### The page which you can use:
+/msg/view/  Display the private message of the current login user
+/msg/compose/ Compose private message
+
+
+Advanced Usage
+-----
 ### Use tag.
 <br/>
 compose message tag:
@@ -53,4 +60,5 @@ view message tag:
 <pre>
 {% load message_tags %}
 {% messages request %}
+Note：the request parameter is the HTTPRequest object.
 </pre>

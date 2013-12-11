@@ -62,3 +62,7 @@ view message tag:
 {% messages request %}
 Note：the request parameter is the HTTPRequest object.
 </pre>
+
+Sites that use django-attachment
+-----
+Not yet now.

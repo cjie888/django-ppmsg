@@ -63,6 +63,6 @@ view message tag:
 Note：the request parameter is the HTTPRequest object.
 </pre>
 
-Sites that use django-attachment
+Sites that use django-ppmsg
 -----
 Not yet now.

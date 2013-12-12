@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import template
 from django.template import Context
+from django.core.urlresolvers import reverse
+
 from ppmsg.models import Message, message_count_unread
 
 register = template.Library()
@@ -13,24 +15,31 @@ def get_item(dictionary, key):
 @register.tag("compose_msg")
 def do_compose_msg(parser, token):
     try:
-        tag_name, next = token.contents.split()
+        params = token.contents.split()
+        next_page = reverse('messages_view')
+        if (len(params)) > 1:
+            tag_name = params[0]
+            next_page = params[1]
+        else:
+            tag_name = params[0]
+
     except ValueError:
         raise template.TemplateSyntaxError("%r tag requires two argument" % tag_name)
-    return ComposeMessageNode(next)
+    return ComposeMessageNode(next_page)
 
 
 class ComposeMessageNode(template.Node):
     
-    def __init__(self, next):
-        self._next = template.Variable(next)
+    def __init__(self, next_page):
+        self._next_page = template.Variable(next_page)
         
     def render(self, context):
         t = template.loader.get_template("tags/compose.html")
-        next = self._next.resolve(context)
-        new_context = Context({'next': next}, autoescape=context.autoescape)
+        next_page = self._next_page.resolve(context)
+        new_context = Context({'next_page': next_page}, autoescape=context.autoescape)
         
         return t.render(new_context)
-    
+
 @register.tag("messages")
 def do_get_message_list(parser, token):
     """

@@ -54,7 +54,8 @@ Advanced Usage
 compose message tag:
 <pre>
 {% load message_tags %}
-{% compose_msg '/msg/view/' %}
+{% compose_msg '/msg/view/'%}
+Note: The parameter is the redirect page when the login user successfully send the message.
 </pre>
 view message tag:
 <pre>

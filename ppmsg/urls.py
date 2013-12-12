@@ -1,7 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import RedirectView
 from ppmsg.views import *
-import settings
 
 urlpatterns = patterns('',
     url(r'compose/$', compose, name='messages_compose'),

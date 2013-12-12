@@ -46,12 +46,12 @@
 }
 </style>
 <style type="text/css">
-	.changecolor0{color:#f00;}
-	.changecolor1{color:#0f0;}
-	.changecolor2{color:#00f;}
-	.changecolor3{color:#f0f;}
-	.changecolor4{color:#0ff;}
-	.changecolor5{color:#000;}
+	.changecolor0{color: #ff0000;}
+	.changecolor1{color: #00ff00;}
+	.changecolor2{color: #0000ff;}
+	.changecolor3{color: #ff00ff;}
+	.changecolor4{color: #00ffff;}
+	.changecolor5{color: #000000;}
 </style>
 <script type="text/javascript">
   var i=0;
@@ -89,7 +89,7 @@
 							<small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<div id="message#{{message.sender.id}}" class="text-left" style="word-break:break-all">{{message.content}}</div>
+						<div id="message_p#{{message.id}}" class="text-left" style="word-break:break-all;">{{message.content}}</div>
 						<div class="text-right">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>
@@ -97,7 +97,7 @@
                     <div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
                     {% if message.read_at == None and message.sender.username == session_user.username %}
 					    <script type="text/javascript">
-                            setInterval(blink, 1000, "message#{{message.sender.id}}");
+                            setInterval(blink, 1000, "message_p#{{message.id}}");
                         </script>
 					{% endif %}
 				{% else %}
@@ -108,7 +108,7 @@
                             <span class="pull-right"><small class="text-muted">{{message.sent_at|timesince}}前</small>
                             </span>
                         </div>
-                        <div id="{{message.sender.id}}message" class="text-left" style="word-break:break-all">{{message.content}}</div>
+                        <div id="message_p#{{message.id}}" class="text-left" style="word-break:break-all">{{message.content}}</div>
                         <div class="text-right">
                         <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
                         </div>

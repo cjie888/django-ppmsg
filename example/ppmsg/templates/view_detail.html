@@ -1,6 +1,6 @@
-{% extends "base.html" %} 
-{% load icon %} 
-{% load url from future %} 
+{% extends "base.html" %}
+{% load icon %}
+{% load url from future %}
 {% load breadcrumb %}
 {% block content %}
 <style type="text/css">
@@ -89,7 +89,7 @@
 							<small class="text-muted">{{message.sent_at|timesince}}前</small>
 							</span>
 						</div>
-						<div id="message_p#{{message.id}}" class="text-left" style="word-break:break-all;">{{message.content}}</div>
+						<div id="message_p{{message.id}}" class="text-left" style="word-break:break-all;">{{message.content}}</div>
 						<div class="text-right">
 					    <a class="btn btn-default btn-xs"  href="#delmsgModal" data-toggle="modal" onclick='msg_del("{{message.id}}", "{{message.content|escapejs}}")'>删除</a>
 						</div>
@@ -97,7 +97,7 @@
                     <div class="col-xs-1 col-md-1">{% usericon message.sender 60 "#" %}</div>
                     {% if message.read_at == None and message.sender.username == session_user.username %}
 					    <script type="text/javascript">
-                            setInterval(blink, 1000, "message_p#{{message.id}}");
+                            setInterval(blink, 1000, "message_p{{message.id}}");
                         </script>
 					{% endif %}
 				{% else %}
@@ -117,7 +117,7 @@
 				{% endif %}
 				<div style="margin-top: 10px"></div>
 			</li>
-	{% endfor %} 
+	{% endfor %}
 	</ul>
 	<!-- DelmsgModal -->
     <div class="modal fade" id="delmsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -137,14 +137,14 @@
              </div>
          </div>
      </div>
- 
+
     <!-- endDelmsgModal -->
 {% else %}
 	<p>您目前没有私信</p>
-{% endif %} 
+{% endif %}
 <script type="text/javascript">
   function msg_del(id, msg)
-  {  
+  {
       $('#delmsgModal').on('show.bs.modal',function(){
           $('#del_msg_info').html('确定要删除该条私信?')
           $("#del_msg_yes").data('delmsg', msg);
@@ -180,7 +180,7 @@
               } else {
             	  console.log('设置失败')
               }
-              
+
           }
       });
   }
